@@ -3,8 +3,8 @@
 class FormController extends Controller {
     //認証が必要なアクション名の配列
     //今回のアプリでは認証が必要なアクションはない
-    protected $auth_actions = array();
-    
+    protected $auth_actions = [];
+
     //インデックスアクション
     public function indexAction() {
         /*
@@ -12,7 +12,7 @@ class FormController extends Controller {
          * データ項目が格納されたハッシュ配列を取得
          */
         $form = $this->db_manager->get('Form')->getFormModel();
-        
+
         //セッションから情報を取得
         $session_form = $this->session->get("form");
         //セッション情報があれば、配列同士をマージする
@@ -20,9 +20,9 @@ class FormController extends Controller {
             $form = array_merge($form,$session_form);
         }
         //Viewテンプレートに渡すデータ配列作成
-        $data = array(
+        $data = [
             "form" => $form,
-        );
+        ];
         return $this->render($data);
     }
 
@@ -39,7 +39,7 @@ class FormController extends Controller {
             $form[$key] = $this->request->getPost($key);
         }
         //エラー情報の配列を初期化
-        $errors = array();        
+        $errors = [];
         //名前の必須チェック
         if(empty($form["name"])){
             $errors[] = "名前は必須です";
@@ -56,19 +56,19 @@ class FormController extends Controller {
             //入力されたデータをセッションに格納
             $this->session->set("form",$form);
             //Viewテンプレートに渡すデータ配列作成
-            $data = array(
+            $data = [
                 "form"    => $form,
                 "_token"  => $this->generateCsrfToken('form/confirm'),
-            );
+            ];
             return $this->render($data);
         }
         //Viewテンプレートに渡すデータ配列作成エラー情報が渡される
-        $data = array(
+        $data = [
             "form" => $form,
             "errors" => $errors,
-        );
+        ];
         //エラーがある場合、入力画面を表示
-        return $this->render($data,"index");  
+        return $this->render($data,"index");
     }
 
     public function completeAction() {
@@ -82,20 +82,20 @@ class FormController extends Controller {
         if (!$this->checkCsrfToken('form/confirm', $token)) {
             return $this->redirect('/form/index');
         }
-        
+
         //セッションからフォームのデータを取得
         $form = $this->session->get("form");
-        
+
         //テーブルに書き込む
         $this->db_manager->get("Form")->insert($form);
-        
+
         //セッションデータを削除
         $this->session->clear();
-        
+
         //Viewテンプレートに渡すデータ配列作成
-        $data = array(
+        $data = [
             "form" => $form
-        );
+        ];
         //完了画面を表示
         return $this->render($data);
     }
