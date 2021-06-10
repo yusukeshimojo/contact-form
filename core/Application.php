@@ -201,7 +201,7 @@ abstract class Application
      *
      * @throws HttpNotFoundException コントローラが特定できない場合
      */
-    public function runAction($controller_name, $action, $params = array())
+    public function runAction($controller_name, $action, $params = [])
     {
         $controller_class = ucfirst($controller_name) . 'Controller';
 

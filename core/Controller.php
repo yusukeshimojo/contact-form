@@ -14,7 +14,7 @@ abstract class Controller
     protected $response;
     protected $session;
     protected $db_manager;
-    protected $auth_actions = array();
+    protected $auth_actions = [];
 
     /**
      * コンストラクタ
@@ -41,7 +41,7 @@ abstract class Controller
      *
      * @throws UnauthorizedActionException 認証が必須なアクションに認証前にアクセスした場合
      */
-    public function run($action, $params = array())
+    public function run($action, $params = [])
     {
         $this->action_name = $action;
 
@@ -67,13 +67,13 @@ abstract class Controller
      * @param string $layout レイアウトファイル名
      * @return string レンダリングしたビューファイルの内容
      */
-    protected function render($variables = array(), $template = null, $layout = 'layout')
+    protected function render($variables = [], $template = null, $layout = 'layout')
     {
-        $defaults = array(
+        $defaults = [
             'request'  => $this->request,
             'base_url' => $this->request->getBaseUrl(),
             'session'  => $this->session,
-        );
+        ];
 
         $view = new View($this->application->getViewDir(), $defaults);
 
@@ -125,7 +125,7 @@ abstract class Controller
     protected function generateCsrfToken($form_name)
     {
         $key = 'csrf_tokens/' . $form_name;
-        $tokens = $this->session->get($key, array());
+        $tokens = $this->session->get($key, []);
         if (count($tokens) >= 10) {
             array_shift($tokens);
         }
@@ -148,7 +148,7 @@ abstract class Controller
     protected function checkCsrfToken($form_name, $token)
     {
         $key = 'csrf_tokens/' . $form_name;
-        $tokens = $this->session->get($key, array());
+        $tokens = $this->session->get($key, []);
 
         if (false !== ($pos = array_search($token, $tokens, true))) {
             unset($tokens[$pos]);
