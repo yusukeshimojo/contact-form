@@ -9,7 +9,7 @@ class View
 {
     protected $base_dir;
     protected $defaults;
-    protected $layout_variables = array();
+    protected $layout_variables = [];
 
     /**
      * コンストラクタ
@@ -17,7 +17,7 @@ class View
      * @param string $base_dir
      * @param array $defaults
      */
-    public function __construct($base_dir, $defaults = array())
+    public function __construct($base_dir, $defaults = [])
     {
         $this->base_dir = $base_dir;
         $this->defaults = $defaults;
